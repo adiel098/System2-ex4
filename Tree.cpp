@@ -17,9 +17,9 @@ Tree<T>::~Tree() { //Destructor
 //helper method
 template<typename T>
 void Tree<T>::deleteTreeRecursive(Node<T>* node) //will delete all the nodes in the tree
-{ 
-    
-    if (node) 
+{
+
+    if (node)
     {
         for (auto child : node->children) {
             deleteTreeRecursive(child);
@@ -31,7 +31,7 @@ void Tree<T>::deleteTreeRecursive(Node<T>* node) //will delete all the nodes in 
 
 template<typename T>
 void Tree<T>::add_root(T data) { //will add new root and if already exist its will update the value
-    if (root==nullptr) 
+    if (root==nullptr)
     {
         root = new Node<T>(data);
     } else {
@@ -40,15 +40,15 @@ void Tree<T>::add_root(T data) { //will add new root and if already exist its wi
 }
 
 template<typename T>
-void Tree<T>::add_sub_node(Node<T>* parent, Node<T>* child) 
+void Tree<T>::add_sub_node(Node<T>* parent, Node<T>* child)
 {
 
-    if (parent->children.size() < k) 
+    if (parent->children.size() < k)
     {
 
         parent->children.push_back(child);
-    } 
-    else 
+    }
+    else
     {
 
         throw std::overflow_error("You trying to add more child  than approve (k)");
@@ -65,13 +65,13 @@ T Tree<T>::get_root() const {
 }
 
 template<typename T>
-Node<T>* Tree<T>::get_root_node() const 
+Node<T>* Tree<T>::get_root_node() const
 {
     return root;
 }
 
 template<typename T>
-int Tree<T>::getK() const 
+int Tree<T>::getK() const
 {
 
     return k;
@@ -82,7 +82,7 @@ template<typename T>
 Tree<T>::PreorderIterator::PreorderIterator(Node<T>* root) {
 
     this->current=nullptr;
-    if (root!=nullptr) 
+    if (root!=nullptr)
     {
         stack.push(root);
     }
@@ -106,7 +106,7 @@ typename Tree<T>::PreorderIterator& Tree<T>::PreorderIterator::operator++() {
 }
 
 template<typename T>
-void Tree<T>::PreorderIterator::advance() { // proceed next node in preorder 
+void Tree<T>::PreorderIterator::advance() { // proceed next node in preorder
     if (!stack.empty()) {
         current = stack.top();
         stack.pop();
@@ -119,14 +119,14 @@ void Tree<T>::PreorderIterator::advance() { // proceed next node in preorder
 }
 
 template<typename T>
-typename Tree<T>::PreorderIterator Tree<T>::begin_pre_order() 
+typename Tree<T>::PreorderIterator Tree<T>::begin_pre_order()
 {
-    //will return iterator of begin with preorder 
+    //will return iterator of begin with preorder
     return PreorderIterator(root);
 }
 
 template<typename T>
-typename Tree<T>::PreorderIterator Tree<T>::end_pre_order() 
+typename Tree<T>::PreorderIterator Tree<T>::end_pre_order()
 {
     //will return iterator of end with preorder
     return PreorderIterator(nullptr);
@@ -144,35 +144,35 @@ Tree<T>::PostorderIterator::PostorderIterator(Node<T>* root) {
 }
 
 template<typename T>
-bool Tree<T>::PostorderIterator::operator!=(const PostorderIterator& other) const 
+bool Tree<T>::PostorderIterator::operator!=(const PostorderIterator& other) const
 {
     return current != other.current;
 }
 
 template<typename T>
-T& Tree<T>::PostorderIterator::operator*() const 
+T& Tree<T>::PostorderIterator::operator*() const
 {
     return current->data;
 }
 
 template<typename T>
-typename Tree<T>::PostorderIterator& Tree<T>::PostorderIterator::operator++() 
+typename Tree<T>::PostorderIterator& Tree<T>::PostorderIterator::operator++()
 {
     advance();
     return *this;
 }
 
 template<typename T>
-void Tree<T>::PostorderIterator::advance() 
-{ 
-    // proceed next node in postorder 
+void Tree<T>::PostorderIterator::advance()
+{
+    // proceed next node in postorder
 
-    if (!visitStack.empty()) 
+    if (!visitStack.empty())
     {
         current = visitStack.top();
         visitStack.pop();
-    } 
-    else 
+    }
+    else
     {
         current = nullptr;
     }
@@ -194,22 +194,22 @@ void Tree<T>::PostorderIterator::fillStack(Node<T>* node) {
 }
 
 template<typename T>
-typename Tree<T>::PostorderIterator Tree<T>::begin_post_order() 
+typename Tree<T>::PostorderIterator Tree<T>::begin_post_order()
 {
-    return PostorderIterator(root);    //will return iterator of begin with postorder 
+    return PostorderIterator(root);    //will return iterator of begin with postorder
 
 }
 
 template<typename T>
-typename Tree<T>::PostorderIterator Tree<T>::end_post_order() 
+typename Tree<T>::PostorderIterator Tree<T>::end_post_order()
 {
-    return PostorderIterator(nullptr); //will return iterator of end with postorder 
+    return PostorderIterator(nullptr); //will return iterator of end with postorder
 }
 
 // InorderIterator//
 template<typename T>
 Tree<T>::InorderIterator::InorderIterator(Node<T>* root)
- {
+{
     this->current=root;
     while (current) {
         stack.push(current);
@@ -222,19 +222,19 @@ Tree<T>::InorderIterator::InorderIterator(Node<T>* root)
 }
 
 template<typename T>
-bool Tree<T>::InorderIterator::operator!=(const InorderIterator& other) const 
+bool Tree<T>::InorderIterator::operator!=(const InorderIterator& other) const
 {
     return current != other.current;
 }
 
 template<typename T>
-T& Tree<T>::InorderIterator::operator*() const 
+T& Tree<T>::InorderIterator::operator*() const
 {
     return current->data;
 }
 
 template<typename T>
-typename Tree<T>::InorderIterator& Tree<T>::InorderIterator::operator++() 
+typename Tree<T>::InorderIterator& Tree<T>::InorderIterator::operator++()
 {
     advance();
     return *this;
@@ -246,37 +246,37 @@ void Tree<T>::InorderIterator::advance() { // procced the iterator to next right
     if (current==nullptr) //end or not exisst
         return;
 
-    if (!current->children.empty() && current->children.size() > 1) 
+    if (!current->children.empty() && current->children.size() > 1)
     {
         Node<T>* temp = current->children[1];
-        while (temp) 
+        while (temp)
         {
             stack.push(temp);
             temp = temp->children.empty() ? nullptr : temp->children[0];
         }
     }
 
-    if (!stack.empty()) 
+    if (!stack.empty())
     {
         current = stack.top();
         stack.pop();
-    } 
-    else 
+    }
+    else
     {
         current = nullptr;
     }
 }
 
 template<typename T>
-typename Tree<T>::InorderIterator Tree<T>::begin_in_order() 
+typename Tree<T>::InorderIterator Tree<T>::begin_in_order()
 {
-    return InorderIterator(root); //will return iterator of begin with inorder 
+    return InorderIterator(root); //will return iterator of begin with inorder
 }
 
 template<typename T>
-typename Tree<T>::InorderIterator Tree<T>::end_in_order() 
+typename Tree<T>::InorderIterator Tree<T>::end_in_order()
 {
-    return InorderIterator(nullptr); //will return iterator of end with inordder 
+    return InorderIterator(nullptr); //will return iterator of end with inordder
 }
 
 // BFSIterator//
@@ -289,19 +289,19 @@ Tree<T>::BFSIterator::BFSIterator(Node<T>* root)
 }
 
 template<typename T>
-bool Tree<T>::BFSIterator::operator!=(const BFSIterator& other) const 
+bool Tree<T>::BFSIterator::operator!=(const BFSIterator& other) const
 {
     return current != other.current;
 }
 
 template<typename T>
-T& Tree<T>::BFSIterator::operator*() const 
+T& Tree<T>::BFSIterator::operator*() const
 {
     return current->data;
 }
 
 template<typename T>
-typename Tree<T>::BFSIterator& Tree<T>::BFSIterator::operator++() 
+typename Tree<T>::BFSIterator& Tree<T>::BFSIterator::operator++()
 {
     advance();
     return *this;
@@ -321,15 +321,15 @@ void Tree<T>::BFSIterator::advance() { // procced to next node by run on all chi
 }
 
 template<typename T>
-typename Tree<T>::BFSIterator Tree<T>::begin_bfs_scan() 
+typename Tree<T>::BFSIterator Tree<T>::begin_bfs_scan()
 {
-    return BFSIterator(root); //will return iterator of begin with bfs 
+    return BFSIterator(root); //will return iterator of begin with bfs
 }
 
 template<typename T>
-typename Tree<T>::BFSIterator Tree<T>::end_bfs_scan() 
+typename Tree<T>::BFSIterator Tree<T>::end_bfs_scan()
 {
-    return BFSIterator(nullptr); //will return iterator of end with bfs 
+    return BFSIterator(nullptr); //will return iterator of end with bfs
 }
 
 // DFSIterator//
@@ -341,18 +341,18 @@ Tree<T>::DFSIterator::DFSIterator(Node<T>* root)
     if (root!=nullptr)
     {
         stack.push(root);
-    } 
+    }
     advance();//procced to first node
 }
 
 template<typename T>
-bool Tree<T>::DFSIterator::operator!=(const DFSIterator& other) const 
+bool Tree<T>::DFSIterator::operator!=(const DFSIterator& other) const
 {
     return current != other.current;
 }
 
 template<typename T>
-T& Tree<T>::DFSIterator::operator*() const 
+T& Tree<T>::DFSIterator::operator*() const
 {
     return current->data;
 }
@@ -377,13 +377,13 @@ void Tree<T>::DFSIterator::advance() { // procced to next in dfs
 }
 
 template<typename T>
-typename Tree<T>::DFSIterator Tree<T>::begin_dfs_scan() 
+typename Tree<T>::DFSIterator Tree<T>::begin_dfs_scan()
 {
     return DFSIterator(root); //will return iterator of begin with dfs
 }
 
 template<typename T>
-typename Tree<T>::DFSIterator Tree<T>::end_dfs_scan() 
+typename Tree<T>::DFSIterator Tree<T>::end_dfs_scan()
 {
     return DFSIterator(nullptr); //will return iterator of end with dfs
 }

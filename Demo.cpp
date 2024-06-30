@@ -79,11 +79,11 @@ int main(){
         }
         std::cout << std::endl;
 
-    auto it = tree.myHeap();
-    auto end = tree.end_bfs_scan();
-    for (; it != end; ++it) {
-        std::cout << *it << " ";
-    }
+    // auto it = tree.myHeap();
+    // auto end = tree.end_bfs_scan();
+    // for (; it != end; ++it) {
+    //     std::cout << *it << " ";
+    // }
     std::cout << std::endl;
     } catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;

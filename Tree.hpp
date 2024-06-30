@@ -20,8 +20,8 @@ public:
 
     Tree(int k = 2); // default to k=2
 
-    BFSIterator myHeap() ; //convert tree to minimal heap
-    void heapify(Node<T>* node); // helper method for myHeap
+    //BFSIterator myHeap() ; //convert tree to minimal heap
+    //void heapify(Node<T>* node); // helper method for myHeap
     void add_root(T value);
     void add_sub_node(Node<T>* parent, Node<T>* child);
     T get_root() const;
@@ -98,7 +98,7 @@ public:
 
     public:
         BFSIterator(Node<T>* root);
-        
+
 
         bool operator!=(const BFSIterator& other) const;
         T& operator*() const;
