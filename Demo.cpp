@@ -4,6 +4,7 @@
 
 
 #include "Node.hpp"
+#include "Complex.hpp"
 #include "Tree.hpp"
 #include <iostream>
 using namespace std;
@@ -19,19 +20,15 @@ int main(){
         auto root = tree.get_root_node();
         auto child1 = new Node<double>(1.2);
         auto child2 = new Node<double>(1.3);
-        auto child3 = new Node<double>(1.33);
 
         auto grandchild1 = new Node<double>(1.4);
         auto grandchild2 = new Node<double>(1.5);
-        auto grandchild3 = new Node<double>(1.6);
 
         tree.add_sub_node(root, child1);
         tree.add_sub_node(root, child2);
-        tree.add_sub_node(root, child3);
 
         tree.add_sub_node(child1, grandchild1);
         tree.add_sub_node(child1, grandchild2);
-        tree.add_sub_node(child2, grandchild3);
 
         auto it = tree.begin_pre_order();
         auto end = tree.end_pre_order();
