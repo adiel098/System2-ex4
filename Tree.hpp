@@ -5,10 +5,10 @@
 #include <iostream>
 #include <vector>
 #include <stack>
-#include "Complex.hpp"
-
 #include <queue>
 #include <stdexcept>
+#include <algorithm>
+
 
 // Tree class definition
 template<typename T>
@@ -26,6 +26,7 @@ public:
     T get_root() const;
     Node<T>* get_root_node() const;
     int getK() const;
+    void myHeap();
 
     // Preorder iterator
     class PreorderIterator {
@@ -148,19 +149,15 @@ private:
 
 template<typename T>
 Tree<T>::Tree(int k) : root(nullptr), k(k) {
-
-    if(k<0)
-
-    {
-        throw std::overflow_error("you cant create tree with nagetive k");
-
+    if(k < 0) {
+        throw std::overflow_error("you can't create tree with negative k");
     }
 }
 
 template<typename T>
 Tree<T>::~Tree() {
     deleteTreeRecursive(root);
-    root=nullptr;
+    root = nullptr;
 }
 
 template<typename T>
@@ -200,13 +197,14 @@ void Tree<T>::add_sub_node(Node<T>* parent, Node<T>* child) {
     if (parent->children.size() < k) {
         parent->children.push_back(child);
     } else {
-        throw std::overflow_error("You trying to add more child than approve (k)");
+        throw std::overflow_error("You are trying to add more children than allowed (k)");
     }
 }
+
 template<typename T>
 T Tree<T>::get_root() const {
     if (!root) {
-        throw std::runtime_error("Tree is empty and not have root");
+        throw std::runtime_error("Tree is empty and does not have a root");
     }
     return root->data;
 }
@@ -219,6 +217,43 @@ Node<T>* Tree<T>::get_root_node() const {
 template<typename T>
 int Tree<T>::getK() const {
     return k;
+}
+
+template<typename T>
+void Tree<T>::myHeap() {
+    if (!root) return;
+
+    // Step 1: Gather all nodes in an array using BFS
+    std::vector<Node<T>*> nodes;
+    std::queue<Node<T>*> q;
+    q.push(root);
+    
+    while (!q.empty()) {
+        Node<T>* current = q.front();
+        q.pop();
+        nodes.push_back(current);
+        for (auto child : current->children) {
+            q.push(child);
+        }
+    }
+
+    // Step 2: Sort the array based on node values to create a minimal heap structure
+    std::sort(nodes.begin(), nodes.end(), [](Node<T>* a, Node<T>* b) {
+        return (a->data) < (b->data);
+    });
+
+    // Step 3: Reassign the values in the original tree to reflect the minimal heap
+    q.push(root);
+    size_t index = 0;
+    
+    while (!q.empty()) {
+        Node<T>* current = q.front();
+        q.pop();
+        current->data = nodes[index++]->data;
+        for (auto child : current->children) {
+            q.push(child);
+        }
+    }
 }
 
 // PreorderIterator implementation
@@ -267,21 +302,16 @@ void Tree<T>::PreorderIterator::advance() {
 
 template<typename T>
 typename Tree<T>::PreorderIterator Tree<T>::begin_pre_order() {
-    if(this->getK()>2)
-    {
-        throw std::runtime_error("you cant use that on no binary tree");
-        
-
+    if (this->getK() > 2) {
+        throw std::runtime_error("You can't use that on a non-binary tree");
     }
     return PreorderIterator(root);
 }
 
 template<typename T>
 typename Tree<T>::PreorderIterator Tree<T>::end_pre_order() {
-    if(this->getK()>2)
-    {
-        throw std::runtime_error("you cant use that on no binary tree");
-
+    if (this->getK() > 2) {
+        throw std::runtime_error("You can't use that on a non-binary tree");
     }
     return PreorderIterator(nullptr);
 }
@@ -344,20 +374,16 @@ void Tree<T>::PostorderIterator::fillStack(Node<T>* node) {
 
 template<typename T>
 typename Tree<T>::PostorderIterator Tree<T>::begin_post_order() {
-    if(this->getK()>2)
-    {
-        throw std::runtime_error("you cant use that on no binary tree");
-
+    if (this->getK() > 2) {
+        throw std::runtime_error("You can't use that on a non-binary tree");
     }
     return PostorderIterator(root);
 }
 
 template<typename T>
 typename Tree<T>::PostorderIterator Tree<T>::end_post_order() {
-    if(this->getK()>2)
-    {
-        throw std::runtime_error("you cant use that on no binary tree");
-
+    if (this->getK() > 2) {
+        throw std::runtime_error("You can't use that on a non-binary tree");
     }
     return PostorderIterator(nullptr);
 }
@@ -419,24 +445,19 @@ void Tree<T>::InorderIterator::advance() {
 
 template<typename T>
 typename Tree<T>::InorderIterator Tree<T>::begin_in_order() {
-    if(this->getK()>2)
-    {
-        throw std::runtime_error("you cant use that on no binary tree");
-
+    if (this->getK() > 2) {
+        throw std::runtime_error("You can't use that on a non-binary tree");
     }
     return InorderIterator(root);
 }
 
 template<typename T>
 typename Tree<T>::InorderIterator Tree<T>::end_in_order() {
-    if(this->getK()>2)
-    {
-        throw std::runtime_error("you cant use that on no binary tree");
-
+    if (this->getK() > 2) {
+        throw std::runtime_error("You can't use that on a non-binary tree");
     }
     return InorderIterator(nullptr);
 }
-
 
 // BFSIterator implementation
 template<typename T>
@@ -482,13 +503,11 @@ void Tree<T>::BFSIterator::advance() {
 
 template<typename T>
 typename Tree<T>::BFSIterator Tree<T>::begin_bfs_scan() {
-    
     return BFSIterator(root);
 }
 
 template<typename T>
 typename Tree<T>::BFSIterator Tree<T>::end_bfs_scan() {
-    
     return BFSIterator(nullptr);
 }
 
@@ -538,13 +557,11 @@ void Tree<T>::DFSIterator::advance() {
 
 template<typename T>
 typename Tree<T>::DFSIterator Tree<T>::begin_dfs_scan() {
-   
     return DFSIterator(root);
 }
 
 template<typename T>
 typename Tree<T>::DFSIterator Tree<T>::end_dfs_scan() {
-    
     return DFSIterator(nullptr);
 }
 
