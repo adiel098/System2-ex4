@@ -1,3 +1,5 @@
+//id:207988213,email:haleviadiel@gmail.com
+
 #include <QApplication>
 #include "mainwindow.h"
 #include "Node.hpp"
