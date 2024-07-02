@@ -46,7 +46,7 @@ public:
         PreorderIterator& operator++();
 
     private:
-        void advance();
+        void progress();
     };
 
     PreorderIterator begin_pre_order();
@@ -69,7 +69,7 @@ public:
         PostorderIterator& operator++();
 
     private:
-        void advance();
+        void progress();
         void fillStack(Node<T>* node);
     };
 
@@ -93,7 +93,7 @@ public:
         InorderIterator& operator++();
 
     private:
-        void advance();
+        void progress();
     };
 
     InorderIterator begin_in_order();
@@ -115,7 +115,7 @@ public:
         BFSIterator& operator++();
 
     private:
-        void advance();
+        void progress();
     };
 
     BFSIterator begin_bfs_scan();
@@ -137,7 +137,7 @@ public:
         DFSIterator& operator++();
 
     private:
-        void advance();
+        void progress();
     };
 
     DFSIterator begin_dfs_scan();
@@ -225,33 +225,31 @@ template<typename T>
 void Tree<T>::myHeap() {
     if (!root) return;
 
-    // Step 1: Gather all nodes in an array using BFS
-    std::vector<Node<T>*> nodes;
+    // Step 1: Gather all node values in a vector using BFS
+    std::vector<T> values;
     std::queue<Node<T>*> q;
     q.push(root);
     
     while (!q.empty()) {
         Node<T>* current = q.front();
         q.pop();
-        nodes.push_back(current);
+        values.push_back(current->data);
         for (auto child : current->children) {
             q.push(child);
         }
     }
 
-    // Step 2: Sort the array based on node values to create a minimal heap structure
-    std::sort(nodes.begin(), nodes.end(), [](Node<T>* a, Node<T>* b) {
-        return (a->data) < (b->data);
-    });
+    // Step 2: Sort the values to reflect the minimal heap property
+    std::sort(values.begin(), values.end());
 
-    // Step 3: Reassign the values in the original tree to reflect the minimal heap
+    // Step 3: Reassign the sorted values back to the tree nodes in BFS order
     q.push(root);
     size_t index = 0;
     
     while (!q.empty()) {
         Node<T>* current = q.front();
         q.pop();
-        current->data = nodes[index++]->data;
+        current->data = values[index++];
         for (auto child : current->children) {
             q.push(child);
         }
@@ -265,7 +263,7 @@ Tree<T>::PreorderIterator::PreorderIterator(Node<T>* root) {
     if (root) {
         stack.push(root);
     }
-    advance();
+    progress();
 }
 
 template<typename T>
@@ -285,12 +283,12 @@ T& Tree<T>::PreorderIterator::operator*() const {
 
 template<typename T>
 typename Tree<T>::PreorderIterator& Tree<T>::PreorderIterator::operator++() {
-    advance();
+    progress();
     return *this;
 }
 
 template<typename T>
-void Tree<T>::PreorderIterator::advance() {
+void Tree<T>::PreorderIterator::progress() {
     if (!stack.empty()) {
         current = stack.top();
         stack.pop();
@@ -324,7 +322,7 @@ Tree<T>::PostorderIterator::PostorderIterator(Node<T>* root) {
     current = root;
     if (root) {
         fillStack(root);
-        advance();
+        progress();
     }
 }
 
@@ -345,12 +343,12 @@ T& Tree<T>::PostorderIterator::operator*() const {
 
 template<typename T>
 typename Tree<T>::PostorderIterator& Tree<T>::PostorderIterator::operator++() {
-    advance();
+    progress();
     return *this;
 }
 
 template<typename T>
-void Tree<T>::PostorderIterator::advance() {
+void Tree<T>::PostorderIterator::progress() {
     if (!visitStack.empty()) {
         current = visitStack.top();
         visitStack.pop();
@@ -361,15 +359,21 @@ void Tree<T>::PostorderIterator::advance() {
 
 template<typename T>
 void Tree<T>::PostorderIterator::fillStack(Node<T>* node) {
-    if (!node) return;
-    std::stack<Node<T>*> tempStack;
-    tempStack.push(node);
-    while (!tempStack.empty()) {
-        Node<T>* n = tempStack.top();
-        tempStack.pop();
+    if (!node) 
+    {
+        return;
+    }
+    std::stack<Node<T>*> temp;
+    temp.push(node);
+    while (!temp.empty()) 
+    {
+
+        Node<T>* n = temp.top();
+        temp.pop();
         visitStack.push(n);
-        for (auto it = n->children.begin(); it != n->children.end(); ++it) {
-            tempStack.push(*it);
+        for (auto it = n->children.begin(); it != n->children.end(); ++it) 
+        {
+            temp.push(*it);
         }
     }
 }
@@ -421,12 +425,12 @@ T& Tree<T>::InorderIterator::operator*() const {
 
 template<typename T>
 typename Tree<T>::InorderIterator& Tree<T>::InorderIterator::operator++() {
-    advance();
+    progress();
     return *this;
 }
 
 template<typename T>
-void Tree<T>::InorderIterator::advance() {
+void Tree<T>::InorderIterator::progress() {
     if (!current) return;
 
     if (!current->children.empty() && current->children.size() > 1) {
@@ -466,7 +470,7 @@ template<typename T>
 Tree<T>::BFSIterator::BFSIterator(Node<T>* root) {
     current = nullptr;
     if (root) queue.push(root);
-    advance();
+    progress();
 }
 
 template<typename T>
@@ -486,12 +490,12 @@ T& Tree<T>::BFSIterator::operator*() const {
 
 template<typename T>
 typename Tree<T>::BFSIterator& Tree<T>::BFSIterator::operator++() {
-    advance();
+    progress();
     return *this;
 }
 
 template<typename T>
-void Tree<T>::BFSIterator::advance() {
+void Tree<T>::BFSIterator::progress() {
     if (!queue.empty()) {
         current = queue.front();
         queue.pop();
@@ -520,7 +524,7 @@ Tree<T>::DFSIterator::DFSIterator(Node<T>* root) {
     if (root) {
         stack.push(root);
     }
-    advance();
+    progress();
 }
 
 template<typename T>
@@ -540,12 +544,12 @@ T& Tree<T>::DFSIterator::operator*() const {
 
 template<typename T>
 typename Tree<T>::DFSIterator& Tree<T>::DFSIterator::operator++() {
-    advance();
+    progress();
     return *this;
 }
 
 template<typename T>
-void Tree<T>::DFSIterator::advance() {
+void Tree<T>::DFSIterator::progress() {
     if (!stack.empty()) {
         current = stack.top();
         stack.pop();
