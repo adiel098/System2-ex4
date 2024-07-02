@@ -5,10 +5,11 @@
 
 #include "Node.hpp"
 #include <iostream>
+#include <stdexcept>
+
 #include <vector>
 #include <stack>
 #include <queue>
-#include <stdexcept>
 #include <algorithm>
 
 
@@ -16,19 +17,21 @@
 template<typename T>
 class Tree {
 private:
+
     Node<T>* root;
-    int k; // Maximum number of children
+    int k;  // max children
 
 public:
-    Tree(int k = 2); // default to k=2
-    ~Tree(); // Destructor
+    Tree(int k = 2); //set default to k=2
+    ~Tree(); //Destructor
     bool node_exists(Node<T>* node, Node<T>* root) const; // Helper function to check if a node exists in the tree
     void add_root(T value);
     void add_sub_node(Node<T>* parent, Node<T>* child);
+    void myHeap();
+
     T get_root() const;
     Node<T>* get_root_node() const;
     int getK() const;
-    void myHeap();
 
     // Preorder iterator
     class PreorderIterator {
@@ -40,6 +43,7 @@ public:
         PreorderIterator(Node<T>* root);
 
         bool operator!=(const PreorderIterator& other) const;
+
         bool operator==(const PreorderIterator& other) const;
 
         T& operator*() const;
@@ -56,13 +60,16 @@ public:
     class PostorderIterator {
     private:
         Node<T>* current;
+
         std::stack<Node<T>*> stack;
+
         std::stack<Node<T>*> visitStack;
 
     public:
         PostorderIterator(Node<T>* root);
 
         bool operator!=(const PostorderIterator& other) const;
+
         bool operator==(const PostorderIterator& other) const;
 
         T& operator*() const;
@@ -86,6 +93,7 @@ public:
         InorderIterator(Node<T>* root);
 
         bool operator!=(const InorderIterator& other) const;
+
         bool operator==(const InorderIterator& other) const;
         void pushLeftMost(Node<T>* node);
 
@@ -109,6 +117,7 @@ public:
         BFSIterator(Node<T>* root);
 
         bool operator!=(const BFSIterator& other) const;
+
         bool operator==(const BFSIterator& other) const;
 
         T& operator*() const;
@@ -131,6 +140,7 @@ public:
         DFSIterator(Node<T>* root);
 
         bool operator!=(const DFSIterator& other) const;
+
         bool operator==(const DFSIterator& other) const;
 
         T& operator*() const;
