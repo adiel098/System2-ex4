@@ -320,3 +320,122 @@ TEST_CASE("Test DFS and BFS traversal for k > 2 with multiple grandchildren") {
         CHECK(bfs_values == expected_bfs);
     }
 }
+// Test case for converting tree to minimal heap for k <= 2 with grandchildren
+TEST_CASE("Test converting tree to minimal heap for k <= 2 with grandchildren") {
+    Tree<int> tree(2);
+    tree.add_root(10);
+    auto root = tree.get_root_node();
+    auto child1 = new Node<int>(20);
+    auto child2 = new Node<int>(30);
+    auto grandchild1 = new Node<int>(40);
+    auto grandchild2 = new Node<int>(50);
+
+    tree.add_sub_node(root, child1);
+    tree.add_sub_node(root, child2);
+    tree.add_sub_node(child1, grandchild1);
+    tree.add_sub_node(child1, grandchild2);
+
+    // Convert to minimal heap
+    tree.myHeap();
+
+    // Verify the structure using BFS traversal
+    auto it = tree.begin_bfs_scan();
+    auto end = tree.end_bfs_scan();
+    std::vector<int> bfs_values;
+    for (; it != end; ++it) {
+        bfs_values.push_back(*it);
+    }
+    std::vector<int> expected_bfs = {10, 20, 30, 40, 50}; // Expected minimal heap structure
+    CHECK(bfs_values == expected_bfs);
+}
+
+// Test case for converting tree to minimal heap for k > 2 with grandchildren
+TEST_CASE("Test converting tree to minimal heap for k > 2 with grandchildren") {
+    Tree<int> tree(3);
+    tree.add_root(10);
+    auto root = tree.get_root_node();
+    auto child1 = new Node<int>(20);
+    auto child2 = new Node<int>(30);
+    auto child3 = new Node<int>(40);
+    auto grandchild1 = new Node<int>(50);
+    auto grandchild2 = new Node<int>(60);
+
+    tree.add_sub_node(root, child1);
+    tree.add_sub_node(root, child2);
+    tree.add_sub_node(root, child3);
+    tree.add_sub_node(child1, grandchild1);
+    tree.add_sub_node(child1, grandchild2);
+
+    // Convert to minimal heap
+    tree.myHeap();
+
+    // Verify the structure using BFS traversal
+    auto it = tree.begin_bfs_scan();
+    auto end = tree.end_bfs_scan();
+    std::vector<int> bfs_values;
+    for (; it != end; ++it) {
+        bfs_values.push_back(*it);
+    }
+    std::vector<int> expected_bfs = {10, 20, 30, 40, 50, 60}; // Expected minimal heap structure
+    CHECK(bfs_values == expected_bfs);
+}
+
+// Test case for converting tree to minimal heap with complex numbers
+TEST_CASE("Test converting tree to minimal heap with complex numbers") {
+    Tree<Complex> tree(2);
+    tree.add_root(Complex(10, 1));
+    auto root = tree.get_root_node();
+    auto child1 = new Node<Complex>(Complex(20, 2));
+    auto child2 = new Node<Complex>(Complex(30, 3));
+    auto grandchild1 = new Node<Complex>(Complex(40, 4));
+    auto grandchild2 = new Node<Complex>(Complex(50, 5));
+
+    tree.add_sub_node(root, child1);
+    tree.add_sub_node(root, child2);
+    tree.add_sub_node(child1, grandchild1);
+    tree.add_sub_node(child1, grandchild2);
+
+    // Convert to minimal heap
+    tree.myHeap();
+
+    // Verify the structure using BFS traversal
+    auto it = tree.begin_bfs_scan();
+    auto end = tree.end_bfs_scan();
+    std::vector<Complex> bfs_values;
+    for (; it != end; ++it) {
+        bfs_values.push_back(*it);
+    }
+    std::vector<Complex> expected_bfs = {Complex(10, 1), Complex(20, 2), Complex(30, 3), Complex(40, 4), Complex(50, 5)}; // Expected minimal heap structure
+    CHECK(bfs_values == expected_bfs);
+}
+
+// Test case for converting tree to minimal heap with multiple levels of grandchildren
+TEST_CASE("Test converting tree to minimal heap with multiple levels of grandchildren") {
+    Tree<int> tree(2);
+    tree.add_root(1);
+    auto root = tree.get_root_node();
+    auto child1 = new Node<int>(2);
+    auto child2 = new Node<int>(3);
+    auto grandchild1 = new Node<int>(4);
+    auto grandchild2 = new Node<int>(5);
+    auto greatgrandchild1 = new Node<int>(6);
+
+    tree.add_sub_node(root, child1);
+    tree.add_sub_node(root, child2);
+    tree.add_sub_node(child1, grandchild1);
+    tree.add_sub_node(child1, grandchild2);
+    tree.add_sub_node(grandchild1, greatgrandchild1);
+
+    // Convert to minimal heap
+    tree.myHeap();
+
+    // Verify the structure using BFS traversal
+    auto it = tree.begin_bfs_scan();
+    auto end = tree.end_bfs_scan();
+    std::vector<int> bfs_values;
+    for (; it != end; ++it) {
+        bfs_values.push_back(*it);
+    }
+    std::vector<int> expected_bfs = {1, 2, 3, 4, 5, 6}; // Expected minimal heap structure
+    CHECK(bfs_values == expected_bfs);
+}
